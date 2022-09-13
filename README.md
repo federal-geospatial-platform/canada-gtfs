@@ -1,6 +1,6 @@
 # Canadian Public Transit Systems
 
-![image](https://user-images.githubusercontent.com/57367002/189784868-1ccaf6f4-c24b-4c76-b7bb-0f86fdcf9f56.png)
+![image](https://user-images.githubusercontent.com/57367002/189785029-13379427-56d3-4958-bf2a-d776cab35ca5.png)
 
 ### What is this project?
 

@@ -1,5 +1,7 @@
 # Canadian Public Transit Systems
 
+![image](https://user-images.githubusercontent.com/57367002/189784868-1ccaf6f4-c24b-4c76-b7bb-0f86fdcf9f56.png)
+
 ### What is this project?
 
 Code for generating geospatial data of public transit agencies in Canada, with information on stop locations, route locations, route types, level of service, wheelchair access, bike access, and more. Used to generate the [Canadian Public Transit Systems dataset](https://open.canada.ca/data/en/dataset/b8241e15-2872-4a63-9d36-3083d03e8474) hosted on the Federal Geospatial Platform. Final shapefiles are also provided in the repository.
@@ -31,8 +33,6 @@ Users can use the script to directly download GTFS data from public transit agen
 | wheelchair_accessible | 0 or empty = no accessibility information for the trip; 1 = vehicle being used for the trip can accommodate at least one wheelchair; 2 = no wheelchairs   can be accommodated on the trip    |
 | bikes_allowed         | 0 or empty = no bike information for the trip; 1 = vehicle being used for the trip can accommodate at least one bicycle; 2 = no bicycles are allowed on the trip                           |
 
-![image](https://user-images.githubusercontent.com/57367002/189784820-70ed4bca-67d6-4f75-9413-af7dbc678805.png)
-
 ### How do I generate the data?
 
 Pull the repository to create local copies of the files. Run <code>1-process_gtfs.R</code> to increase local memory, load in the links to the GTFS data, and create the functions to download the data. Then run <code>download.gtfs.canada()</code> to loop through the links to the GTFS data and process the relevant information. This will produce a <code>.fst</code> file, which is a quick-to-download data storage file. <code>1-process_gtfs.R</code> also contains a function <code>map.gtfs.system</code> to map the GTFS systems using the transit system names provided in the <code>gtfs_sources.xlsx</code> file. To produce shapefiles, run the <code>2-export_gtfs.R</code> file. Due to the size of the data, both files take approximately thirty minutes each to run.
@@ -41,6 +41,8 @@ To access the data without running the code, use the <code>.fst</code> files (no
 
 
 # Systèmes de transport en commun canadiens
+
+![image](https://user-images.githubusercontent.com/57367002/189784929-ca30b980-2a97-4068-b3d6-9bc77088236f.png)
 
 ### What is this project?
 

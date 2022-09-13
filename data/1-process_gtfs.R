@@ -16,8 +16,7 @@ library(raster)
 memory.limit(24000)
 
 # Read in GTFS data links
-data_gtfs_links <- read_excel("./data/gtfs/gtfs_sources.xlsx")
-
+data_gtfs_links <- read_excel("gtfs_sources.xlsx")
 
 # Create function to read in GTFS data
 download.gtfs.canada <- function(){
@@ -38,18 +37,18 @@ download.gtfs.canada <- function(){
       # Process files that have two layers of zip folder
       if(!is.na(data_gtfs_links[i,]$zipped)) {
         # Store second zip folder locally
-        unzip(loc, data_gtfs_links[i,]$zipped, exdir = "./data/gtfs")
+        unzip(loc, data_gtfs_links[i,]$zipped, exdir = "./data")
         # Rename second zip folder
         file.rename(
-          paste0("./data/gtfs/", data_gtfs_links[i,]$zipped),
-          paste0("./data/gtfs/", data_gtfs_links[i,]$local, ".zip"))
+          paste0("./data/", data_gtfs_links[i,]$zipped),
+          paste0("./data/", data_gtfs_links[i,]$local, ".zip"))
         # Update local file path
-        loc <- paste0("./data/gtfs/", data_gtfs_links[i,]$local, ".zip")
+        loc <- paste0("./data/", data_gtfs_links[i,]$local, ".zip")
       }
       # Process files that are stored locally
     } else {
       # Identify local file path
-      loc <- paste0("./data/gtfs/", data_gtfs_links[i,]$local, ".zip")
+      loc <- paste0("./data/", data_gtfs_links[i,]$local, ".zip")
     }
     # Identify file path of GTFS data
     file <- ifelse(!is.na(data_gtfs_links[i,]$subfolder),
@@ -309,59 +308,60 @@ download.gtfs.canada <- function(){
     try(data_gtfs_all_lines <- rbind.fill(
       data_gtfs_all_lines, data_gtfs_system_lines), silent = T)
   }
+  return(data_gtfs_all_points)
   # Create first row to force dataframe to encode as UTF-8
   encoding_points = data.frame(
     id = "→", system = "→", city = "→", province = "→",
     stop_name = "→", routes_serviced = "→")
   # Save point data as FST
-  write.fst(
-    # Bind row with UTF-8 encoded columns to force encoding to UTF-8
-    rbind.fill(
-      encoding_points,
-      # Perform final edits on point data
-      data_gtfs_all_points %>%
-        # Edit columns
-        mutate(
-          # Append system name to stop id
-          stop_id = paste(`id`, "-", stop_id)) %>%
-        # Convert missing accessibility values to zero
-        { if("wheelchair_boarding" %in% colnames(.))
-        # Convert missing wheelchair boarding values to zero
-        mutate(.,
-          wheelchair_boarding = ifelse(
-            is.na(wheelchair_boarding) | wheelchair_boarding == "", 
-            0, wheelchair_boarding))
-          else . } %>%
-        # Remove duplicated rows
-        distinct()), "./data/gtfs/gtfs_canada_points.fst")
+  # write.fst(
+  #   # Bind row with UTF-8 encoded columns to force encoding to UTF-8
+  #   rbind.fill(
+  #     encoding_points,
+  #     # Perform final edits on point data
+  #     data_gtfs_all_points %>%
+  #       # Edit columns
+  #       mutate(
+  #         # Append system name to stop id
+  #         stop_id = paste(`id`, "-", stop_id)) %>%
+  #       # Convert missing accessibility values to zero
+  #       { if("wheelchair_boarding" %in% colnames(.))
+  #       # Convert missing wheelchair boarding values to zero
+  #       mutate(.,
+  #         wheelchair_boarding = ifelse(
+  #           is.na(wheelchair_boarding) | wheelchair_boarding == "", 
+  #           0, wheelchair_boarding))
+  #         else . } %>%
+  #       # Remove duplicated rows
+  #       distinct()), "./data/gtfs_canada_points.fst")
   # Create first row to force dataframe to encode as UTF-8
   encoding_lines = data.frame(
     id = "→", system = "→", city = "→", province = "→",
     routes_serviced = "→", route_types_serviced = "→")
   # Save line data as FST
-  write.fst(
-    # Bind row with UTF-8 encoded columns to force encoding to UTF-8
-    rbind.fill(
-      encoding_lines,
-      # Perform final edits on line data
-      data_gtfs_all_lines %>%
-        # Edit columns
-        mutate(
-          # Append system name to shape id
-          shape_id = paste(`id`, "-", shape_id)) %>%
-        # Convert missing accessibility values to zero
-        { if("wheelchair_boarding" %in% colnames(.))
-          # Convert missing wheelchair boarding values to zero
-          mutate(.,
-                 wheelchair_accessible = ifelse(
-                   is.na(wheelchair_accessible) | wheelchair_accessible == "", 
-                   0, wheelchair_accessible),
-                 bikes_allowed = ifelse(
-                   is.na(bikes_allowed) | bikes_allowed == "", 
-                   0, bikes_allowed))
-          else . } %>%
-        # Remove duplicated rows
-        distinct()), "./data/gtfs/gtfs_canada_lines.fst")
+  # write.fst(
+  #   # Bind row with UTF-8 encoded columns to force encoding to UTF-8
+  #   rbind.fill(
+  #     encoding_lines,
+  #     # Perform final edits on line data
+  #     data_gtfs_all_lines %>%
+  #       # Edit columns
+  #       mutate(
+  #         # Append system name to shape id
+  #         shape_id = paste(`id`, "-", shape_id)) %>%
+  #       # Convert missing accessibility values to zero
+  #       { if("wheelchair_boarding" %in% colnames(.))
+  #         # Convert missing wheelchair boarding values to zero
+  #         mutate(.,
+  #                wheelchair_accessible = ifelse(
+  #                  is.na(wheelchair_accessible) | wheelchair_accessible == "", 
+  #                  0, wheelchair_accessible),
+  #                bikes_allowed = ifelse(
+  #                  is.na(bikes_allowed) | bikes_allowed == "", 
+  #                  0, bikes_allowed))
+  #         else . } %>%
+  #       # Remove duplicated rows
+  #       distinct()), "./data/gtfs_canada_lines.fst")
 }
 
 # Create function to map GTFS system data
@@ -369,8 +369,8 @@ map.gtfs.system <- function(name = NA){
   # Create map if valid system name is entered
   if(name %in% data_gtfs_links$system){
     # Select line data for system
-    lines <- read_fst("./data/gtfs/gtfs_canada_lines.fst", from = 2)[
-      read_fst("./data/gtfs/gtfs_canada_lines.fst", from = 2)$system == name,]
+    lines <- read_fst("./data/gtfs_canada_lines.fst", from = 2)[
+      read_fst("./data/gtfs_canada_lines.fst", from = 2)$system == name,]
     # Identify coordinates of lines
     xy <- lines %>% dplyr::select(shape_pt_lon, shape_pt_lat)
     # Identify boundary of map based on system location

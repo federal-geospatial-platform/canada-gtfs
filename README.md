@@ -2,14 +2,13 @@
 
 ### What is this project?
 
-Code for generating geospatial data of public transit agencies in Canada, with information on stop locations, route locations, route types, level of service, wheelchair access, bike access, and more.
-
-Used to generate the [Canadian Public Transit Systems dataset](https://open.canada.ca/data/en/dataset/b8241e15-2872-4a63-9d36-3083d03e8474) hosted on the Federal Geospatial Platform. Final shapefiles are also provided in the repository.
+Code for generating geospatial data of public transit agencies in Canada, with information on stop locations, route locations, route types, level of service, wheelchair access, bike access, and more. Used to generate the [Canadian Public Transit Systems dataset](https://open.canada.ca/data/en/dataset/b8241e15-2872-4a63-9d36-3083d03e8474) hosted on the Federal Geospatial Platform. Final shapefiles are also provided in the repository.
 
 Users can use the script to directly download GTFS data from public transit agencies in all of Canada in a workable geospatial format or modify the script for custom purposes.
 
-| id                    | Unique code for the transit system                                                                                                                                                             |
+| Field                 | Description                                                                                                                                                           |
 |-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id                    | Unique code for the transit system                                                                                                                                                       |
 | system                | The transit system that reported the data                                                                                                                                                      |
 | city                  | The municipality or region in which the transit system is primarily located                                                                                                                  |
 | province              | The province in which the transit system is primarily located                                                                                                                                  |

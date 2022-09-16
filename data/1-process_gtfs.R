@@ -16,7 +16,7 @@ library(raster)
 memory.limit(24000)
 
 # Read in GTFS data links
-data_gtfs_links <- read_excel("gtfs_sources.xlsx")
+data_gtfs_links <- read_excel("gtfs_sources.xlsx")[1,]
 
 # Create function to read in GTFS data
 download.gtfs.canada <- function(){
@@ -308,7 +308,6 @@ download.gtfs.canada <- function(){
     try(data_gtfs_all_lines <- rbind.fill(
       data_gtfs_all_lines, data_gtfs_system_lines), silent = T)
   }
-  return(data_gtfs_all_points)
   # Create first row to force dataframe to encode as UTF-8
   encoding_points = data.frame(
     id = "→", system = "→", city = "→", province = "→",

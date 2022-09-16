@@ -314,54 +314,54 @@ download.gtfs.canada <- function(){
     id = "→", system = "→", city = "→", province = "→",
     stop_name = "→", routes_serviced = "→")
   # Save point data as FST
-  # write.fst(
-  #   # Bind row with UTF-8 encoded columns to force encoding to UTF-8
-  #   rbind.fill(
-  #     encoding_points,
-  #     # Perform final edits on point data
-  #     data_gtfs_all_points %>%
-  #       # Edit columns
-  #       mutate(
-  #         # Append system name to stop id
-  #         stop_id = paste(`id`, "-", stop_id)) %>%
-  #       # Convert missing accessibility values to zero
-  #       { if("wheelchair_boarding" %in% colnames(.))
-  #       # Convert missing wheelchair boarding values to zero
-  #       mutate(.,
-  #         wheelchair_boarding = ifelse(
-  #           is.na(wheelchair_boarding) | wheelchair_boarding == "", 
-  #           0, wheelchair_boarding))
-  #         else . } %>%
-  #       # Remove duplicated rows
-  #       distinct()), "./data/gtfs_canada_points.fst")
+  write.fst(
+    # Bind row with UTF-8 encoded columns to force encoding to UTF-8
+    rbind.fill(
+      encoding_points,
+      # Perform final edits on point data
+      data_gtfs_all_points %>%
+        # Edit columns
+        mutate(
+          # Append system name to stop id
+          stop_id = paste(`id`, "-", stop_id)) %>%
+        # Convert missing accessibility values to zero
+        { if("wheelchair_boarding" %in% colnames(.))
+        # Convert missing wheelchair boarding values to zero
+        mutate(.,
+          wheelchair_boarding = ifelse(
+            is.na(wheelchair_boarding) | wheelchair_boarding == "",
+            0, wheelchair_boarding))
+          else . } %>%
+        # Remove duplicated rows
+        distinct()), "./data/gtfs_canada_points.fst")
   # Create first row to force dataframe to encode as UTF-8
   encoding_lines = data.frame(
     id = "→", system = "→", city = "→", province = "→",
     routes_serviced = "→", route_types_serviced = "→")
   # Save line data as FST
-  # write.fst(
-  #   # Bind row with UTF-8 encoded columns to force encoding to UTF-8
-  #   rbind.fill(
-  #     encoding_lines,
-  #     # Perform final edits on line data
-  #     data_gtfs_all_lines %>%
-  #       # Edit columns
-  #       mutate(
-  #         # Append system name to shape id
-  #         shape_id = paste(`id`, "-", shape_id)) %>%
-  #       # Convert missing accessibility values to zero
-  #       { if("wheelchair_boarding" %in% colnames(.))
-  #         # Convert missing wheelchair boarding values to zero
-  #         mutate(.,
-  #                wheelchair_accessible = ifelse(
-  #                  is.na(wheelchair_accessible) | wheelchair_accessible == "", 
-  #                  0, wheelchair_accessible),
-  #                bikes_allowed = ifelse(
-  #                  is.na(bikes_allowed) | bikes_allowed == "", 
-  #                  0, bikes_allowed))
-  #         else . } %>%
-  #       # Remove duplicated rows
-  #       distinct()), "./data/gtfs_canada_lines.fst")
+  write.fst(
+    # Bind row with UTF-8 encoded columns to force encoding to UTF-8
+    rbind.fill(
+      encoding_lines,
+      # Perform final edits on line data
+      data_gtfs_all_lines %>%
+        # Edit columns
+        mutate(
+          # Append system name to shape id
+          shape_id = paste(`id`, "-", shape_id)) %>%
+        # Convert missing accessibility values to zero
+        { if("wheelchair_boarding" %in% colnames(.))
+          # Convert missing wheelchair boarding values to zero
+          mutate(.,
+                 wheelchair_accessible = ifelse(
+                   is.na(wheelchair_accessible) | wheelchair_accessible == "",
+                   0, wheelchair_accessible),
+                 bikes_allowed = ifelse(
+                   is.na(bikes_allowed) | bikes_allowed == "",
+                   0, bikes_allowed))
+          else . } %>%
+        # Remove duplicated rows
+        distinct()), "./data/gtfs_canada_lines.fst")
 }
 
 # Create function to map GTFS system data

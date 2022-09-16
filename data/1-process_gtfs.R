@@ -16,7 +16,7 @@ library(raster)
 memory.limit(24000)
 
 # Read in GTFS data links
-data_gtfs_links <- read_excel("gtfs_sources.xlsx")[1,]
+data_gtfs_links <- read_excel("gtfs_sources.xlsx")
 
 # Create function to read in GTFS data
 download.gtfs.canada <- function(){
